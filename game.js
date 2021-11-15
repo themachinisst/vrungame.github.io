@@ -50,7 +50,7 @@ scene("game", () => {
     const Train = add([
         sprite("train"),
         origin("botleft"),
-        pos(90, 600),
+        pos(90, height()),
         scale(1.5),
         area(),
         body(),
@@ -60,12 +60,12 @@ scene("game", () => {
     function changeTrack(){
         if(right==false){
             Train.action(() => {
-                Train.moveTo(280 ,600);
+                Train.moveTo(280 ,height());
             });
             right = true;
         }else{
             Train.action(() => {
-                Train.moveTo(90, 600);
+                Train.moveTo(90, height());
             });
 
             right = false;
