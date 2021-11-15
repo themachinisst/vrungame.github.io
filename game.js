@@ -1,16 +1,9 @@
 import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs";
   //var kaboom = require('kaboom')
  // initialize kaboom context
-//For phone 
-  /*
 kaboom({
     width: 450,
-    height: 800,
-});
-*/
-kaboom({
-    width: 450,
-    height:550,
+    height:800,
 });
 
 let SPEED = 500;    
