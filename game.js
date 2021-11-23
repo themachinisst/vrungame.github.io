@@ -189,7 +189,8 @@ scene("main", () => {
     let PlayButCont = add([
         sprite("BoundBox"),
         origin("topleft"),
-        pos(width()/12, height()/2),
+        //pos(width()/12, height()/2),
+        pos(width()/12, height()/4),
         scale(5),
         area(),
         //body(),
