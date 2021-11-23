@@ -42,7 +42,7 @@ loadSprite("train", "assets/TrainSprite.png", {
 });
 
 //For main menu
-loadSprite("Main", "assets/main.jpg");
+loadSprite("Main", "assets/Main.jpg");
 
 // For end page 
 loadSprite("EndPage", "assets/endPage.jpg");
