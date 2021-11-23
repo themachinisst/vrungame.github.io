@@ -190,7 +190,7 @@ scene("main", () => {
         sprite("BoundBox"),
         origin("topleft"),
         pos(width()/2-200, height()/2+75),
-        scale(4),
+        scale(5),
         area(),
         //body(),
         layer("top"),
