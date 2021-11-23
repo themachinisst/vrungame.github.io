@@ -3,8 +3,8 @@ import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs";
  // initialize kaboom context
 
 kaboom({
-    width: 600,
-    height:1200,
+    width: 500,/600,
+    height: 1000,//1200,
     background: [ 0, 0, 0, ],
     canvas: document.querySelector("#mycanvas"),   
     
