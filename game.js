@@ -1,19 +1,54 @@
 import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs";
   //var kaboom = require('kaboom')
  // initialize kaboom context
+
 kaboom({
-    width: 450,
-    height:800,
+    width: 600,
+    height:1200,
+    background: [ 0, 0, 0, ],
+    canvas: document.querySelector("#mycanvas"),   
+    
 });
+
+
+
+// The 2D Context for the HTML canvas element. It
+// provides objects, methods, and properties to draw and
+// manipulate graphics on a canvas drawing surface.
+
 
 let SPEED = 500;    
 let score = 0; 
 let fuel = 11;
-let right = false
+let right = true;
 
-loadSprite("bg", "assets/bgtwice.jpg");
-loadSprite("train", "assets/train.png");
+//loadFont("MCF", "/fonts/MCFont_10x8.png", 10, 8);
+loadSprite("bg", "assets/bg.jpg");
+loadSprite("train", "assets/TrainSprite.png", {
+    sliceX: 21,
+    sliceY: 1,
+    anims:{
+        "Left":{
+            from: 11,
+            to:20,
+            speed:35,
+        },
+        "Right":{
+            from:0,
+            to:11,
+            speed:35,
+        }
+    }
+});
 
+//For main menu
+loadSprite("Main", "assets/main.jpg");
+
+// For end page 
+loadSprite("EndPage", "assets/endPage.jpg");
+
+
+loadSprite("BoundBox", "assets/boundingbox.png");
 
 scene("game", () => {
 
@@ -24,15 +59,39 @@ scene("game", () => {
     ], "top");
     
     //for background track
-    const Trackbg = add([
+
+
+    let TrackbgOne = add([
         sprite("bg"),
-        origin("botleft"),
-        pos(0, 550),
-        scale(0.43),
+        origin("topleft"),
+        pos(0, 0),
+        scale(1.25, 1.5),
         area(),
         move(DOWN, SPEED),
         layer("bot"),
+        "TrackbgOne"
     ]);
+
+    let TrackbgTwo = add([
+        sprite("bg"),
+        origin("topleft"),
+        pos(0, -1500),
+        scale(1.25, 1.5),
+        area(),
+        move(DOWN, SPEED),
+        layer("bot"),
+        "TrackbgTwo"
+    ]);
+
+    onUpdate(()=>{
+        if(TrackbgOne.pos.y>=1500)
+            {
+                //alert("negative position of train")
+                TrackbgOne.moveTo(0,0);
+                TrackbgTwo.moveTo(0,-1500);
+            }
+    })
+
 
     //for platform
     add([
@@ -47,36 +106,47 @@ scene("game", () => {
     ]);
 
     //add train
+
     const Train = add([
         sprite("train"),
         origin("botleft"),
-        pos(90, height()),
-        scale(1.5),
+        pos(100, height()),
+        scale(1),
         area(),
-        body(),
+        //body(),
         layer("top"),
     ]);
 
     function changeTrack(){
-        if(right==false){
-            Train.action(() => {
-                Train.moveTo(280 ,height());
-            });
-            right = true;
-        }else{
-            Train.action(() => {
-                Train.moveTo(90, height());
-            });
-
-            right = false;
-        };
+            if(!right){
+                Train.play("Left");
+                Train.onUpdate(() => {
+                    Train.move(dir(180).scale(SPEED))
+                    if(Train.pos.x <= 100){
+                        Train.pos.x = 100
+                    }
+                    debug.log(Train.pos.x)
+                })
+                right = true;
+            }else{
+                Train.play("Right");
+                Train.onUpdate(() => {
+                    Train.move(dir(0).scale(200))
+                    if(Train.pos.x >= 350){
+                        Train.pos.x = 350
+                    }
+                    debug.log(Train.pos.x)
+                })
+                right = false;
+            };
     };
 
     mouseClick(changeTrack);
+   
 
     //add scores
     add([
-        text("score: "),
+        text("score:"),
         pos(250, 24),
         scale(0.4),
         layer("top"),
@@ -104,4 +174,35 @@ scene("game", () => {
 
 });
 
-go("game");
+scene("main", () => {
+
+    add([
+        sprite("Main"),
+        origin("topleft"),
+        pos(0, 0),
+        scale(1),
+        area(),
+        //body(),
+        layer("top"),
+    ]);
+
+    let PlayButCont = add([
+        sprite("BoundBox"),
+        origin("topleft"),
+        pos(width()/2-200, height()/2+75),
+        scale(4),
+        area(),
+        //body(),
+        layer("top"),
+        "PlayButCont"
+    ]);
+
+    onClick("PlayButCont", ()=>{
+        go("game");
+    })
+
+    //go("game");
+})
+
+go("main");
+
