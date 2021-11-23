@@ -171,8 +171,61 @@ scene("game", () => {
         scale(0.4),
         layer("top"),
     ])
+    
+    action(()=>{
+        score+=0.2;
+        scoreLabel.text = Math.floor(score);
 
+        if(score>50){
+            go("lose", (score));
+        }
+    })
 });
+
+
+scene("lose", (score) => {
+
+    add([
+        sprite("EndPage"),
+        origin("topleft"),
+        pos(0, 0),
+        scale(1),
+        area(),
+        //body(),
+        layer("top"),
+    ]);
+
+     //add scores
+     add([
+        text("score:"),
+        pos(250, 24),
+        scale(0.4),
+        layer("top"),
+    ])
+
+    let scoreLabel = add([
+        text(score),
+        pos(380, 24),
+        scale(0.4),
+        layer("top"),
+    ])
+
+    let TryButCont = add([
+        sprite("BoundBox"),
+        origin("topleft"),
+        pos(width()/12, height()/2),
+        scale(6),
+        area(),
+        //body(),
+        layer("top"),
+        "TryButCont"
+    ]);
+
+    onClick("TryButCont", ()=>{
+        go("game", score=0);
+    })
+})
+
 
 scene("main", () => {
 
