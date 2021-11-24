@@ -177,7 +177,7 @@ scene("game", () => {
         scoreLabel.text = Math.floor(score);
 
         if(score>50){
-            go("lose", (score));
+            go("lose", (scoreLabel.text));
         }
     })
 });
