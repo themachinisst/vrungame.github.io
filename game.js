@@ -213,7 +213,7 @@ scene("lose", (score) => {
     let TryButCont = add([
         sprite("BoundBox"),
         origin("topleft"),
-        pos(width()/12, height()/12),
+        pos(width()/12, height()/11),
         scale(6),
         area(),
         //body(),
