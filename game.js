@@ -23,7 +23,13 @@ let fuel = 11;
 let right = true;
 
 //loadFont("MCF", "/fonts/MCFont_10x8.png", 10, 8);
-loadSprite("bg", "assets/bg.jpg");
+loadSprite("track1", "assets/track1.jpg");
+loadSprite("track2", "assets/track2.jpg");
+loadSprite("track3", "assets/track3.jpg");
+loadSprite("track4", "assets/track4.jpg");
+loadSprite("track5", "assets/track5.jpg");
+loadSprite("track6", "assets/track6.jpg");
+loadSprite("track7", "assets/track7.jpg");
 loadSprite("train", "assets/TrainSprite.png", {
     sliceX: 21,
     sliceY: 1,
@@ -40,6 +46,9 @@ loadSprite("train", "assets/TrainSprite.png", {
         }
     }
 });
+
+loadSprite("TrainObsLeft", "assets/trainCabLeft.png");
+loadSprite("TrainObsRight", "assets/trainCabRight.png");
 
 //For main menu
 loadSprite("Main", "assets/Main.jpg");
@@ -59,13 +68,23 @@ scene("game", () => {
     ], "top");
     
     //for background track
+    let Track = choose(["track1", "track2", "track3", "track4", "track5", "track6", "track7"]);
 
+   onUpdate(()=>{
+        if(TrackbgOne.pos.y>=2400)
+            {
+                //alert("negative position of train")
+                TrackbgOne.moveTo(0,0);
+                TrackbgTwo.moveTo(0,-2400);
+            }
+    })
 
     let TrackbgOne = add([
-        sprite("bg"),
+        //sprite(choose(["track1", "track2", "track3", "track4", "track5", "track6", "track7"])),
+        sprite(Track),
         origin("topleft"),
         pos(0, 0),
-        scale(1.25, 1.5),
+        scale(1),
         area(),
         move(DOWN, SPEED),
         layer("bot"),
@@ -73,24 +92,17 @@ scene("game", () => {
     ]);
 
     let TrackbgTwo = add([
-        sprite("bg"),
+        //sprite(choose(["track1", "track2", "track3", "track4", "track5", "track6", "track7"])),
+        sprite(Track),
         origin("topleft"),
-        pos(0, -1500),
-        scale(1.25, 1.5),
+        pos(0, -2400),
+        scale(1),
         area(),
         move(DOWN, SPEED),
         layer("bot"),
         "TrackbgTwo"
     ]);
 
-    onUpdate(()=>{
-        if(TrackbgOne.pos.y>=1500)
-            {
-                //alert("negative position of train")
-                TrackbgOne.moveTo(0,0);
-                TrackbgTwo.moveTo(0,-1500);
-            }
-    })
 
 
     //for platform
@@ -116,27 +128,85 @@ scene("game", () => {
         //body(),
         layer("top"),
     ]);
+//For spawning boosters
+    function spawnObstacleLeft(){
+        //add coins 
+        let TrainObsLeft = add([
+            sprite("TrainObsLeft"),
+            pos(80, -rand(1000, 2000)),
+            area(),
+            origin("botleft"),
+            layer("top"),
+            scale(1.6),
+            move(DOWN, SPEED),
+            "TrainObs", // add a tag here
+        ]);
+
+        Train.collides("TrainObs", () => {
+            TrainObsLeft.destroy();
+        });
+
+    // wait a random amount of time to spawn next boost
+    wait(rand(10, 15), (spawnObstacleLeft));
+}
+
+//start spawning obstacles
+spawnObstacleLeft();
+
+
+
+    function spawnObstacleRight(){
+        //add coins 
+    
+        let TrainObsRight = add([
+            sprite("TrainObsRight"),
+            pos(360, -rand(4000, 5000)),
+            area(),
+            origin("botleft"),
+            layer("top"),
+            scale(1.6),
+            move(DOWN, SPEED),
+            "TrainObs", // add a tag here
+        ]);
+
+        Train.collides("TrainObs", () => {
+            TrainObsRight.destroy();
+        });
+    // wait a random amount of time to spawn next boost
+    wait(rand(8, 12), (spawnObstacleRight));
+    }
+
+    //start spawning obstacles
+    spawnObstacleRight();
+
+   
+    function moveToRight(){
+        Train.onUpdate(() => {
+            Train.move(SPEED, 0)
+            if(Train.pos.x >= 350){
+                Train.pos.x = 350
+            }
+        })
+    }
+
+    function moveToLeft(){
+        Train.onUpdate(() => {
+            Train.move(-SPEED, 0)
+            if(Train.pos.x <= 100){
+                Train.pos.x = 100
+            }
+            //debug.log(Train.pos.x)
+        })
+    }
 
     function changeTrack(){
             if(!right){
                 Train.play("Left");
-                Train.onUpdate(() => {
-                    Train.move(dir(180).scale(SPEED))
-                    if(Train.pos.x <= 100){
-                        Train.pos.x = 100
-                    }
-                    debug.log(Train.pos.x)
-                })
+                moveToLeft()
                 right = true;
             }else{
                 Train.play("Right");
-                Train.onUpdate(() => {
-                    Train.move(dir(0).scale(200))
-                    if(Train.pos.x >= 350){
-                        Train.pos.x = 350
-                    }
-                    debug.log(Train.pos.x)
-                })
+                moveToRight()
                 right = false;
             };
     };
@@ -177,7 +247,7 @@ scene("game", () => {
         scoreLabel.text = Math.floor(score);
 
         if(score>50){
-            go("lose", (scoreLabel.text));
+            //go("lose", (scoreLabel.text));
         }
     })
 });
@@ -252,7 +322,7 @@ scene("main", () => {
     ]);
 
     onClick("PlayButCont", ()=>{
-        go("game");
+        go("game", score=0);
     })
 
     //go("game");
