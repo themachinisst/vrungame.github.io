@@ -313,7 +313,7 @@ scene("main", () => {
         sprite("BoundBox"),
         origin("topleft"),
         //pos(width()/12, height()/2),
-        pos(width()/12, height()/4),
+        pos(width()/12, height()/2.5),
         scale(5),
         area(),
         //body(),
