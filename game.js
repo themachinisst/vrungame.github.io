@@ -60,7 +60,8 @@ loadSprite("EndPage", "assets/endPage.jpg");
 loadSprite("BoundBox", "assets/boundingbox.png");
 
 scene("game", () => {
-
+    
+    fullscreen(true);
     layers([
         "bot",
         "mid",
