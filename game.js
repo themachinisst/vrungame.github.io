@@ -424,7 +424,7 @@ scene("main", () => {
         origin("topleft"),
         //pos(width()/12, height()/2),
         pos(width()/12, height()/3.5),
-        scale(6, 3),
+        scale(6, 7),
         area(),
         //body(),
         layer("top"),
