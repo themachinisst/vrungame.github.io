@@ -71,7 +71,7 @@ loadSprite("TrainObsRight", "assets/trainCabRight.png");
 loadSprite("MuteBut", "assets/mutebutton.png");
 
 //For main menu
-loadSprite("Main", "assets/main.jpg");
+loadSprite("Main", "assets/Main.jpg");
 
 // For end page 
 //loadSprite("EndPage", "assets/endPage.jpg");
