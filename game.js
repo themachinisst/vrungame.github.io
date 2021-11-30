@@ -10,6 +10,11 @@ kaboom({
     
 });
 
+var IOS = false;
+if(/iPhone|iPad|iPod|Opera Mini/i.test(navigator.userAgent) ) {
+    // run your code here
+    IOS = true
+   }
 
 
 // The 2D Context for the HTML canvas element. It
@@ -47,8 +52,22 @@ loadSprite("train", "assets/TrainSprite.png", {
     }
 });
 
+loadSprite("smokeAnim", "assets/smokeAnim2.png", {    
+    sliceX: 14,
+    sliceY: 1,
+    anims:{
+        "boom":{
+            from: 0,
+            to:13,
+            speed: 15,
+        }
+    }
+});
+
+
 loadSprite("TrainObsLeft", "assets/trainCabLeft.png");
 loadSprite("TrainObsRight", "assets/trainCabRight.png");
+loadSprite("MuteBut", "assets/mutebutton.png");
 
 //For main menu
 loadSprite("Main", "assets/Main.jpg");
@@ -59,6 +78,11 @@ loadSprite("EndPage", "assets/endPage.jpg");
 
 loadSprite("BoundBox", "assets/boundingbox.png");
 
+//audio
+loadSound("MCReg", "./assets/audio/MCReg.mp3");
+loadSound("crash", "./assets/audio/crash.mp3");
+
+var Mute = false; 
 scene("game", () => {
     
     fullscreen(true);
@@ -69,14 +93,22 @@ scene("game", () => {
     ], "top");
     
     //for background track
-    let Track = choose(["track1", "track2", "track3", "track4", "track5", "track6", "track7"]);
+    let Track = choose(["track1", "track2", "track3"]);
+    let Track2 = choose([ "track4", "track5", "track6", "track7"]);
 
    onUpdate(()=>{
-        if(TrackbgOne.pos.y>=2400)
+        if(TrackbgOne.pos.y>=6000)
             {
                 //alert("negative position of train")
                 TrackbgOne.moveTo(0,0);
                 TrackbgTwo.moveTo(0,-2400);
+                TrackbgThree.moveTo(0,-3600);
+                TrackbgFour.moveTo(0,-4800);
+                TrackbgFive.moveTo(0,-6000);
+                Track = choose(["track1", "track2", "track3"]);
+                Track2 = choose([ "track4", "track5", "track6", "track7"]);
+   
+                //debug.log(Track)
             }
     })
 
@@ -94,7 +126,7 @@ scene("game", () => {
 
     let TrackbgTwo = add([
         //sprite(choose(["track1", "track2", "track3", "track4", "track5", "track6", "track7"])),
-        sprite(Track),
+        sprite(Track2),
         origin("topleft"),
         pos(0, -2400),
         scale(1),
@@ -103,7 +135,42 @@ scene("game", () => {
         layer("bot"),
         "TrackbgTwo"
     ]);
+      
+    let TrackbgThree = add([
+        //sprite(choose(["track1", "track2", "track3", "track4", "track5", "track6", "track7"])),
+        sprite(Track),
+        origin("topleft"),
+        pos(0, -3600),
+        scale(1),
+        area(),
+        move(DOWN, SPEED),
+        layer("bot"),
+        "TrackbgTwo"
+    ]);
 
+    let TrackbgFour = add([
+        //sprite(choose(["track1", "track2", "track3", "track4", "track5", "track6", "track7"])),
+        sprite(Track2),
+        origin("topleft"),
+        pos(0, -4800),
+        scale(1),
+        area(),
+        move(DOWN, SPEED),
+        layer("bot"),
+        "TrackbgTwo"
+    ]);
+
+    let TrackbgFive = add([
+        //sprite(choose(["track1", "track2", "track3", "track4", "track5", "track6", "track7"])),
+        sprite(Track),
+        origin("topleft"),
+        pos(0, -6000),
+        scale(1),
+        area(),
+        move(DOWN, SPEED),
+        layer("bot"),
+        "TrackbgTwo"
+    ]);
 
 
     //for platform
@@ -137,14 +204,35 @@ scene("game", () => {
             pos(80, -rand(1000, 2000)),
             area(),
             origin("botleft"),
-            layer("top"),
+            layer("mid"),
             scale(1.6),
             move(DOWN, SPEED),
             "TrainObs", // add a tag here
         ]);
 
-        Train.collides("TrainObs", () => {
-            TrainObsLeft.destroy();
+        Train.collides("TrainObsLeft", () => {
+            //Train.destroy();
+            var smokeposx = TrainObsLeft.pos.x
+            var smokeposy = TrainObsLeft.pos.y
+            let smokeAnim = add([
+                sprite("smokeAnim",{
+                    anims: "boom",
+                }),
+                pos(smokeposx-400, smokeposy-600),
+                area(),
+                origin("topleft"),
+                layer("mid"),
+                scale(3),
+                move(DOWN, SPEED),
+                "smokeAnim", // add a tag here
+            ]);
+            smokeAnim.play("boom");
+            if(!IOS)
+                navigator.vibrate(200)
+            play("crash", {
+                volume: 0.8
+            });
+            //loseWindow();
         });
 
     // wait a random amount of time to spawn next boost
@@ -164,14 +252,35 @@ spawnObstacleLeft();
             pos(360, -rand(4000, 5000)),
             area(),
             origin("botleft"),
-            layer("top"),
+            layer("mid"),
             scale(1.6),
             move(DOWN, SPEED),
             "TrainObs", // add a tag here
         ]);
 
-        Train.collides("TrainObs", () => {
-            TrainObsRight.destroy();
+       Train.collides("TrainObsRight", () => {
+            //Train.destroy();
+            var smokeposx = TrainObsRight.pos.x
+            var smokeposy = TrainObsRight.pos.y
+            let smokeAnim = add([
+                sprite("smokeAnim",{
+                    anims: "boom",
+                }),
+                pos(smokeposx-400, smokeposy-600),
+                area(),
+                origin("topleft"),
+                layer("mid"),
+                scale(3),
+                move(DOWN, SPEED),
+                "smokeAnim", // add a tag here
+            ]);
+            smokeAnim.play("boom");
+            if(!IOS)
+                navigator.vibrate(200)
+            play("crash", {
+                volume: 0.8
+            });
+            //loseWindow();
         });
     // wait a random amount of time to spawn next boost
     wait(rand(8, 12), (spawnObstacleRight));
@@ -284,7 +393,7 @@ scene("lose", (score) => {
     let TryButCont = add([
         sprite("BoundBox"),
         origin("topleft"),
-        pos(width()/12, height()/10),
+        pos(width()/12, height()/12),
         scale(6),
         area(),
         //body(),
@@ -315,15 +424,53 @@ scene("main", () => {
         origin("topleft"),
         //pos(width()/12, height()/2),
         pos(width()/12, height()/3.5),
-        scale(6),
+        scale(6, 3),
         area(),
         //body(),
         layer("top"),
         "PlayButCont"
     ]);
+    
+    let MuteButton = add([
+        sprite("MuteBut"),
+        pos(width()/2+50, 0),
+        origin("topleft"),
+        scale(0.28), //for 100x100
+        area(),
+        layer("top"),
+        "MuteButton"
+    ])
 
+    let MuteButtonCont = add([
+        sprite("BoundBox"),
+        pos(width()/2-100, -100),
+        origin("topleft"),
+        scale(4), //for 100x100
+        area(),
+        layer("top"),
+        "MuteButtonCont"
+    ])
+  
     onClick("PlayButCont", ()=>{
         go("game", score=0);
+        if(!Mute){
+            play("MCReg", {
+                volume: 1
+            });
+        }
+    })
+  
+    action(()=>{
+        onClick("MuteButtonCont", ()  => {
+            if(Mute){
+                Mute = false;
+            }else{
+                Mute = true
+            }
+        })
+
+        //debug.log(Mute)
+
     })
 
     //go("game");
