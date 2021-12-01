@@ -268,9 +268,11 @@ scene("game", (score) => {
             smokeAnim.play("boom");
             if(!IOS)
                 navigator.vibrate(200)
-            play("crash", {
-                volume: 0.8
-            });
+            if(!Mute){
+                play("crash", {
+                    volume: 0.8
+                });
+            }
             //loseWindow();
         });
 
@@ -316,9 +318,11 @@ scene("game", (score) => {
             smokeAnim.play("boom");
             if(!IOS)
                 navigator.vibrate(200)
-            play("crash", {
-                volume: 0.8
-            });
+            if(!Mute){
+                play("crash", {
+                    volume: 0.8
+                });
+            }
             //loseWindow();
         });
     // wait a random amount of time to spawn next boost
