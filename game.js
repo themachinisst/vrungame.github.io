@@ -251,7 +251,10 @@ scene("game", (score, Mute, SPEED) => {
                     volume: 0.8
                 });
             }
-            go("lose", (scoreLabel.text), Mute);
+          Train.destroy();
+            wait(0.6, ()=>{
+                go("lose", (scoreLabel.text), Mute);
+            })
             //loseWindow(score);
         });
 
@@ -303,7 +306,8 @@ scene("game", (score, Mute, SPEED) => {
                     volume: 0.8
                 });
             }
-            wait(1.5, ()=>{
+            Train.destroy();
+            wait(0.6, ()=>{
                 go("lose", (scoreLabel.text), Mute);
             })
                
@@ -352,16 +356,16 @@ scene("game", (score, Mute, SPEED) => {
     */
     let ScoreText = add([
         sprite("ScoreText"),
-        pos(300, 75),
+        pos(20, 45),
         scale(0.15),
-        origin("center"),
+        origin("topleft"),
         layer("top"),
     ])
 
 
     let scoreLabel = add([
         text(score),
-        pos(380, 60),
+        pos(150, 45),
         scale(0.5),
         origin("topleft"),
         layer("mid"),
