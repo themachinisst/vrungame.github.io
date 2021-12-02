@@ -95,7 +95,7 @@ loadSprite("TrainObsRight", "assets/trainCabRight.png");
 loadSprite("MuteBut", "assets/mutebutton.png");
 loadSprite("ScoreText", "assets/score_text.png");
 //For main menu
-loadSprite("Main", "assets/main.jpg");
+loadSprite("Main", "assets/Main.jpg");
 
 // For end page 
 //loadSprite("EndPage", "assets/endPage.jpg");
