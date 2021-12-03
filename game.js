@@ -381,6 +381,16 @@ scene("game", (score, Mute, SPEED) => {
         layer("top"),
         "MuteButton"
     ])
+    
+     let MuteButtonCont = add([
+        sprite("BoundBox"),
+        pos(width()/2-100, -100),
+        origin("topleft"),
+        scale(5), //for 100x100
+        area(),
+        layer("top"),
+        "MuteButtonCont"
+    ])
 
     action(()=>{
 
@@ -454,7 +464,7 @@ scene("lose", (score, Mute) => {
         sprite("BoundBox"),
         pos(width()/2-100, -100),
         origin("topleft"),
-        scale(4), //for 100x100
+        scale(5), //for 100x100
         area(),
         layer("top"),
         "MuteButtonCont"
@@ -521,7 +531,7 @@ scene("main", (Mute) => {
         sprite("BoundBox"),
         pos(width()/2-100, -100),
         origin("topleft"),
-        scale(4), //for 100x100
+        scale(5), //for 100x100
         area(),
         layer("top"),
         "MuteButtonCont"
