@@ -97,7 +97,7 @@ loadSprite("ScoreText", "assets/score_text.png");
 loadSprite("Energy", "assets/energy.png");
 
 //For main menu
-loadSprite("Main", "assets/main.jpg");
+loadSprite("Main", "assets/Main.jpg");
 loadSprite("RoadBG", "assets/bgroad.jpg");
 loadSprite("CarLeft", "assets/CarLeft.png");
 loadSprite("CarRight", "assets/CarRight.png");
